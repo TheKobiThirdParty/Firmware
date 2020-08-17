@@ -1736,7 +1736,24 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 
 	/* fallthrough */
 	case MAVLINK_MODE_CUSTOM:
-		//stream nothing
+		configure_stream_local("TIMESYNC", 10.0f); // Time synchronization: Sensor time to linux time
+		configure_stream_local("CAMERA_TRIGGER", unlimited_rate);
+		configure_stream_local("CAMERA_IMAGE_CAPTURED", unlimited_rate);
+		configure_stream_local("ATTITUDE_QUATERNION", 100.0f); // Orientation & orientation speed
+		// configure_stream_local("ATTITUDE_QUATERNION_COV", 50.0f); // Orientation & orientation speed with associated float[21] covariance
+		configure_stream_local("LOCAL_POSITION_NED", 100.0f); // Position, speed
+		// configure_stream_local("LOCAL_POSITION_NED_COV", unlimited_rate); // Position (wrt starting position and NED), speed estimate, acceleration estimate and float[45] covariance
+		configure_stream_local("GLOBAL_POSITION_INT", 10.0f); // Fused GPS+Imu position speed & heading
+		// configure_stream_local("GLOBAL_POSITION_INT_COV", 10.0f); // Fused GPS+Imu position speed & heading with float[36] covariance
+		configure_stream_local("RC_CHANNELS", 20.0f); // Receive the RC controller data
+		configure_stream_local("ODOMETRY", 5.0f); // Position, speed, orientation, orientation speed & covariances float[21]
+		configure_stream_local("GPS_RAW_INT", 5.0f); // GPS precision (raw data)
+		// configure_stream_local("ATTITUDE", unlimited_rate); // Euler attitude
+		configure_stream_local("HIGHRES_IMU", 50.0f); // The IMU readings in SI units in NED body frame
+		configure_stream_local("ESTIMATOR_STATUS", 1.0f);
+		// configure_stream_local("EXTENDED_SYS_STATE", 1.0f);
+		configure_stream_local("SYSTEM_TIME", 0.10f);
+		configure_stream_local("SYS_STATUS", 5.0f); // Sensor health, battery voltage & drop rate.
 		break;
 
 	case MAVLINK_MODE_CONFIG: // USB
